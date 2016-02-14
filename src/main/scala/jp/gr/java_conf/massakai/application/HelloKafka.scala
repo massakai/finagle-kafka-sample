@@ -10,7 +10,7 @@ object HelloKafka extends App {
   val consumer = new SimpleConsumer(leadBroker, port, 100000, 64 * 1024, clientName)
 
   val topic: String = "test"
-  val partition = 1
+  val partition = 0
   var offset: Long = 0
   val request = new FetchRequestBuilder()
     .clientId(clientName)
