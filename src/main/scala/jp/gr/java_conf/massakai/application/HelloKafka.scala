@@ -5,7 +5,7 @@ import kafka.javaapi.consumer.SimpleConsumer;
 
 object HelloKafka extends App {
   val leadBroker = "localhost"
-  val port = 9092
+  val port = 9093
   val clientName = "HelloKafka"
   val consumer = new SimpleConsumer(leadBroker, port, 100000, 64 * 1024, clientName)
 
