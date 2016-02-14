@@ -25,8 +25,9 @@ object HelloKafka extends App {
     while (messageAndOffsetIterator.hasNext) {
       val messageAndOffset = messageAndOffsetIterator.next()
       val payload = messageAndOffset.message.payload
-      val message = new Array[Byte](payload.limit)
-      messageAndOffset.message.payload.get(message)
+      val bytes = new Array[Byte](payload.limit)
+      messageAndOffset.message.payload.get(bytes)
+      val message = new String(bytes, "UTF-8")
       println(messageAndOffset.offset + ": " + message)
       offset = messageAndOffset.nextOffset
     }
