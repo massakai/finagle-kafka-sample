@@ -1,0 +1,24 @@
+{
+  "bootstrap": [
+    {
+      "host": "localhost",
+      "port": 9093
+    }
+  ],
+  "consumer": {
+    "soTimeout": 100000,
+    "bufferSize": 65536,
+    "fetchSize": 100000
+  },
+  "topic": [
+    {
+      "name": "test",
+      "partition": [
+        {
+          "id": 0,
+          "offset": 0
+        }
+      ]
+    }
+  ]
+}
