@@ -16,6 +16,6 @@ case class KafkaConsumer(leadBroker: String, port: Int, soTimeout: Int, bufferSi
     consumer.fetch(request)
   }
 
-  // TODO: クロージャで後始末する
+  // TODO: 後始末する
   // consumer.close()
 }
