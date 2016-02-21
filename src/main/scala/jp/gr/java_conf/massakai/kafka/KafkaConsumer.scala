@@ -40,17 +40,17 @@ case class KafkaConsumer(leadBroker: String, port: Int, soTimeout: Int, bufferSi
     consumer.fetch(request)
   }
 
-  def getLastOffset(topic: String, partition: Int, whichTime: Long): Long = {
+  def getLastOffset(topic: String, partition: Int, whichTime: Long): Option[Long] = {
     val topicAndPartition = new TopicAndPartition(topic, partition)
-    val requestInfo = new util.HashMap[TopicAndPartition, PartitionOffsetRequestInfo]()
+    val requestInfo = new java.util.HashMap[TopicAndPartition, PartitionOffsetRequestInfo]()
     requestInfo.put(topicAndPartition, new PartitionOffsetRequestInfo(whichTime, 1))
     val request = new OffsetRequest(requestInfo, kafka.api.OffsetRequest.CurrentVersion, clientName)
     val response = consumer.getOffsetsBefore(request)
     if (response.hasError) {
       println("Error fetching data Offset Data the Broker. Reason: " + response.errorCode(topic, partition))
-      0L
+      None
     } else {
-      response.offsets(topic, partition)(0)
+      Some(response.offsets(topic, partition)(0))
     }
   }
 

@@ -33,7 +33,7 @@ object HelloKafka extends App {
     config.consumer.bufferSize,
     clientName)
 
-  var readOffset = consumer.getLastOffset(topicName, partitionId, System.currentTimeMillis())
+  var readOffset = consumer.getLastOffset(topicName, partitionId, System.currentTimeMillis()).get
   val response = consumer.getMessages(topicName, partitionId, readOffset, config.consumer.fetchSize)
   if (response.hasError) {
     // TODO: エラー処理を追加する
