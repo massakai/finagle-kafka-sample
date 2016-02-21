@@ -13,8 +13,8 @@ object HelloKafka extends App {
 
   implicit val formats = org.json4s.DefaultFormats
   val config: Config = configJson.extract[Config]
+  // TODO: パーティション毎にリーダーを選択する
   val broker = config.bootstrap.head
-  // FIXME: パーティション毎にリーダーを選択する
   val clientName = "HelloKafka_" + broker.host + "_" + broker.port
   val consumer = new KafkaConsumer(
     broker.host,
@@ -23,8 +23,10 @@ object HelloKafka extends App {
     config.consumer.bufferSize,
     clientName)
 
+  // TODO: 複数のトピックに対応する
   val topic = config.topic.head
   val topicName = topic.name
+  // TODO: 複数のパーティションに対応する
   val partition: Partition = topic.partition.head
   val partitionId = partition.id
   var offset = consumer.getLastOffset(topicName, partitionId, System.currentTimeMillis())
