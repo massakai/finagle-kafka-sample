@@ -1,6 +1,6 @@
 package jp.gr.java_conf.massakai.application
 
-import jp.gr.java_conf.massakai.kafka.{Config, KafkaConsumer}
+import jp.gr.java_conf.massakai.kafka.{Partition, Config, KafkaConsumer}
 import scala.io.Source
 import org.json4s.native.JsonMethods._
 import kafka.common.ErrorMapping
@@ -12,7 +12,7 @@ object HelloKafka extends App {
   val configJson = parse(configSource mkString)
 
   implicit val formats = org.json4s.DefaultFormats
-  val config = configJson.extract[Config]
+  val config: Config = configJson.extract[Config]
   val broker = config.bootstrap.head
   // FIXME: パーティション毎にリーダーを選択する
   val clientName = "HelloKafka_" + broker.host + "_" + broker.port
@@ -25,9 +25,9 @@ object HelloKafka extends App {
 
   val topic = config.topic.head
   val topicName = topic.name
-  val partition = topic.partition.head
+  val partition: Partition = topic.partition.head
   val partitionId = partition.id
-  var offset = partition.offset
+  var offset = consumer.getLastOffset(topicName, partitionId, System.currentTimeMillis())
   val response = consumer.getMessages(topicName, partitionId, offset, config.consumer.fetchSize)
   if (response.hasError) {
     // TODO: エラー処理を追加する
