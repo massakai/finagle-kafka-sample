@@ -3,6 +3,7 @@ package jp.gr.java_conf.massakai.application
 import jp.gr.java_conf.massakai.kafka.{Config, KafkaConsumer}
 import scala.io.Source
 import org.json4s.native.JsonMethods._
+import kafka.common.ErrorMapping
 
 object HelloKafka extends App {
   // FIXME: 設定ファイルのパスは実行引数から取得する
@@ -30,7 +31,10 @@ object HelloKafka extends App {
   val response = consumer.getMessages(topicName, partitionId, offset, config.consumer.fetchSize)
   if (response.hasError) {
     // TODO: エラー処理を追加する
-    println("Error")
+    response.errorCode(topic.name, partitionId) match {
+      case ErrorMapping.OffsetOutOfRangeCode => println("Error: Offset out of range")
+      case _ => println("Error")
+    }
   } else {
     val messageAndOffsetIterator = response.messageSet(topicName, partitionId).iterator()
     while (messageAndOffsetIterator.hasNext) {
