@@ -29,8 +29,8 @@ object HelloKafka extends App {
   // TODO: 複数のパーティションに対応する
   val partition: Partition = topic.partition.head
   val partitionId = partition.id
-  var offset = consumer.getLastOffset(topicName, partitionId, System.currentTimeMillis())
-  val response = consumer.getMessages(topicName, partitionId, offset, config.consumer.fetchSize)
+  var readOffset = consumer.getLastOffset(topicName, partitionId, System.currentTimeMillis())
+  val response = consumer.getMessages(topicName, partitionId, readOffset, config.consumer.fetchSize)
   if (response.hasError) {
     // TODO: エラー処理を追加する
     response.errorCode(topic.name, partitionId) match {
@@ -41,12 +41,17 @@ object HelloKafka extends App {
     val messageAndOffsetIterator = response.messageSet(topicName, partitionId).iterator()
     while (messageAndOffsetIterator.hasNext) {
       val messageAndOffset = messageAndOffsetIterator.next()
-      val payload = messageAndOffset.message.payload
-      val bytes = new Array[Byte](payload.limit)
-      messageAndOffset.message.payload.get(bytes)
-      val message = new String(bytes)
-      println(messageAndOffset.offset + ": " + message)
-      offset = messageAndOffset.nextOffset
+      val currentOffset = messageAndOffset.offset
+      if (currentOffset < readOffset) {
+        println("Found an old offset: " + currentOffset + " Expecting: " + readOffset)
+      } else {
+        val payload = messageAndOffset.message.payload
+        val bytes = new Array[Byte](payload.limit)
+        payload.get(bytes)
+        val message = new String(bytes)
+        println(currentOffset + ": " + message)
+        readOffset = messageAndOffset.nextOffset
+      }
     }
   }
 }
