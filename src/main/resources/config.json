@@ -3,6 +3,66 @@
     {
       "host": "localhost",
       "port": 9093
+    },
+    {
+      "host": "localhost",
+      "port": 9094
+    },
+    {
+      "host": "localhost",
+      "port": 9095
+    },
+    {
+      "host": "localhost",
+      "port": 9096
+    },
+    {
+      "host": "localhost",
+      "port": 9097
+    },
+    {
+      "host": "localhost",
+      "port": 9098
+    },
+    {
+      "host": "localhost",
+      "port": 9099
+    },
+    {
+      "host": "localhost",
+      "port": 9100
+    },
+    {
+      "host": "localhost",
+      "port": 9101
+    },
+    {
+      "host": "localhost",
+      "port": 9102
+    },
+    {
+      "host": "localhost",
+      "port": 9103
+    },
+    {
+      "host": "localhost",
+      "port": 9104
+    },
+    {
+      "host": "localhost",
+      "port": 9105
+    },
+    {
+      "host": "localhost",
+      "port": 9106
+    },
+    {
+      "host": "localhost",
+      "port": 9107
+    },
+    {
+      "host": "localhost",
+      "port": 9108
     }
   ],
   "consumer": {
